@@ -1,0 +1,19 @@
+name: instance
+period: 30 # in seconds
+logger: SlowQueriesSnap
+mysql:
+  host: localhost
+  port: 3306
+  user: logger
+  pass: password
+  query: "SELECT id, user, host, db, command, time, state, info from information_schema.processlist WHERE state NOT IN ('', 'Waiting for an event from Coordinator')	AND command NOT IN ('Daemon', 'connect', 'Binlog Dump') AND time > 1 ORDER BY time DESC LIMIT 200"
+  log_column: info
+  extra_tags:
+    - user
+    - command
+    - state
+     
+loki:
+  url: http://127.0.0.1:3100/loki/api/v1/push
+  app_tag: longrunning
+
