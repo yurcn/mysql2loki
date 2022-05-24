@@ -15,5 +15,13 @@ mysql:
      
 loki:
   url: http://127.0.0.1:3100/loki/api/v1/push
-  app_tag: longrunning
 
+repLacements:
+  IN:
+  - replace: IN (/* long line trimmed */)\1
+    search: IN\s+\([^\)]{50,}\)(\s+.*)$
+  - replace: IN (-- long line trimmed
+    search: IN\s+\([\(\),0123456789]{50,}$
+  VALUES:
+  - replace: VALUES(/* long line trimmed */\1
+    search: VALUES\s*\(\([^\)]{50,}(\)\).*)$
